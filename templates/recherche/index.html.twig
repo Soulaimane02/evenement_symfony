@@ -1,0 +1,42 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventParis{% endblock %}
+
+{% block body %}
+<style>
+    .center-content { text-align: center; }
+    .result-container { display: inline-block; text-align: left; border: 1px solid #ccc; padding: 20px; border-radius: 8px; margin-top: 20px; }
+    .result-container table { width: 100%; }
+    .result-container th, .result-container td { padding: 10px; }
+    .result-container th { background-color: #f0f0f0; }
+    .add-friend-button { background-color: #4267B2; color: #fff; border: none; padding: 10px 20px; border-radius: 5px; cursor: pointer; text-decoration: none; }
+    .back-button { position: absolute; top: 20px; right: 20px; background-color: #ff0000; color: #fff; padding: 10px 20px; border-radius: 5px; text-decoration: none; }
+</style>
+
+<div class="center-content">
+    <h1>Trouvez des amis 🔍</h1>
+    <a href="{{ path('app_accueil') }}" class="back-button">Retour</a>
+    {% if resultats is not empty %}
+        {% for resultat in resultats %}
+            <div class="result-container">
+                <table>
+                    <tr>
+                        <th>Nom</th>
+                        <th>Prénom</th>
+                        {# Ajoutez d'autres colonnes au besoin #}
+                        <th>Action</th>
+                    </tr>
+                    <tr>
+                        <td>{{ resultat.nom }}</td>
+                        <td>{{ resultat.prenom }}</td>
+                        {# Ajoutez d'autres colonnes au besoin #}
+                        <td><a href="{{ path('app_accueil', {'id': resultat.id}) }}" class="add-friend-button">Ajouter à mes amis</a></td>
+                    </tr>
+                </table>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>Aucun résultat trouvé pour "{{ recherche }}".</p>
+    {% endif %}
+</div>
+{% endblock %}

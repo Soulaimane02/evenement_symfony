@@ -1,0 +1,122 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventParis{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        html, body {
+            height: 100%;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: linear-gradient(to bottom right, #0b2e4d, #007bff); /* Dégradé de couleur bleu foncé à bleu clair */
+            display: flex;
+            align-items: center; /* Centrage vertical */
+            justify-content: center; /* Centrage horizontal */
+        }
+
+        .register-box {
+            width: 400px;
+            padding: 40px;
+            background: #f5f5f5; /* Fond blanc */
+            border-radius: 10px;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, .2);
+            box-sizing: border-box;
+            position: relative; /* Position relative pour les labels */
+        }
+
+        .register-box h1 {
+            margin: 0 0 30px;
+            padding: 0;
+            color: #000; /* Couleur du texte plus foncée */
+            text-align: center;
+        }
+
+        .register-box input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #000; /* Couleur du texte plus foncée */
+            margin-bottom: 20px;
+            border: none;
+            border-bottom: 1px solid #000; /* Bordure plus foncée */
+            outline: none;
+            background: transparent;
+        }
+
+        {% for child in registrationForm %}
+            {% if child.vars['name'] != '_token' %}
+                .register-box input#{{ child.vars['name'] }} ~ label[for="{{ child.vars['name'] }}"] {
+                    position: absolute;
+                    top: -15px; /* Ajustement de la position */
+                    left: 0;
+                    font-size: 14px; /* Taille de la police */
+                    color: #666; /* Couleur du texte plus claire */
+                    transition: .5s;
+                    opacity: 0.5; /* Opacité réduite */
+                    transform: translateY(-20px);
+                }
+
+                .register-box input#{{ child.vars['name'] }}:focus ~ label[for="{{ child.vars['name'] }}"],
+                .register-box input#{{ child.vars['name'] }}:valid ~ label[for="{{ child.vars['name'] }}"] {
+                    top: -30px; /* Ajustement de la position */
+                    opacity: 1; /* Opacité augmentée lorsque focus ou a une valeur */
+                    transform: translateY(0);
+                }
+            {% endif %}
+        {% endfor %}
+
+        .register-box button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 20px;
+            background: #007bff; /* Couleur de fond bleue */
+            border: 2px solid #007bff; /* Bordure bleue */
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .register-box button:hover {
+            background: #0056b3; /* Couleur de fond bleu foncé au survol */
+            border-color: #0056b3; /* Bordure bleu foncé au survol */
+            box-shadow: 0 0 5px #0056b3, 0 0 25px #0056b3, 0 0 50px #0056b3, 0 0 100px #0056b3;
+        }
+
+        .register-box a {
+            color: #007bff; /* Couleur du lien bleue */
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .register-box a:hover {
+            text-decoration: underline; 
+        }
+    </style>
+{% endblock %}
+{% block body %}
+    <div class="register-box">
+        <h1>Inscription</h1>
+
+<form method="post" enctype="multipart/form-data">
+    {{ form_row(registrationForm.nom) }}
+    {{ form_row(registrationForm.prenom) }}
+    {{ form_row(registrationForm.email) }}
+    {{ form_row(registrationForm.plainPassword, { label: 'Mot de passe' }) }}
+    {{ form_row(registrationForm.photo) }}
+    <button type="submit" class="btn">S'inscrire</button>
+    {{ form_end(registrationForm) }}
+</form>
+    </div>
+{% endblock %}
+

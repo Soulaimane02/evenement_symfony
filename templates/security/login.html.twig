@@ -1,0 +1,143 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}EventParis{% endblock %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <style>
+        html {
+            height: 100%;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            font-family: sans-serif;
+            background: linear-gradient(#141e30, #243b55);
+        }
+
+        .login-box {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 400px;
+            padding: 40px;
+            transform: translate(-50%, -50%);
+            background: #f5f5f5; /* Fond légèrement teinté de gris */
+            box-sizing: border-box;
+            box-shadow: 0 15px 25px rgba(0, 0, 0, .6);
+            border-radius: 10px;
+        }
+
+        .login-box h1 {
+            margin: 0 0 30px;
+            padding: 0;
+            color: #000; /* Couleur du texte plus foncée */
+            text-align: center;
+        }
+
+        .login-box .user-box {
+            position: relative;
+        }
+
+        .login-box input {
+            width: 100%;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #000; /* Couleur du texte plus foncée */
+            margin-bottom: 30px;
+            border: none;
+            border-bottom: 1px solid #000; /* Bordure plus foncée */
+            outline: none;
+            background: transparent;
+        }
+
+        .login-box label {
+            position: absolute;
+            top: 0;
+            left: 0;
+            padding: 10px 0;
+            font-size: 16px;
+            color: #000; /* Couleur du texte plus foncée */
+            pointer-events: none;
+            transition: .5s;
+            opacity: 0.5; /* Opacité réduite */
+            transform: translateY(-20px);
+        }
+
+        .login-box input:focus ~ label,
+        .login-box input:valid ~ label {
+            opacity: 1; /* Opacité augmentée lorsque focus ou a une valeur */
+            transform: translateY(0);
+        }
+
+        .login-box button {
+            display: block;
+            width: 100%;
+            padding: 10px 20px;
+            color: #fff;
+            font-size: 16px;
+            text-decoration: none;
+            text-transform: uppercase;
+            overflow: hidden;
+            transition: .5s;
+            margin-top: 40px;
+            letter-spacing: 4px;
+            background: #007bff; /* Couleur de fond bleue */
+            border: 2px solid #007bff; /* Bordure bleue */
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .login-box button:hover {
+            background: #0056b3; /* Couleur de fond bleu foncé au survol */
+            border-color: #0056b3; /* Bordure bleu foncé au survol */
+            box-shadow: 0 0 5px #0056b3, 0 0 25px #0056b3, 0 0 50px #0056b3, 0 0 100px #0056b3;
+        }
+
+        .login-box a {
+            color: #007bff; /* Couleur du lien bleue */
+            text-decoration: none;
+            display: block;
+            text-align: center;
+            margin-top: 20px;
+        }
+
+        .login-box a:hover {
+            text-decoration: underline; /* Soulignement du lien au survol */
+        }
+    </style>
+{% endblock %}
+
+{% block body %}
+    <div class="login-box">
+        <h1 class="h3 mb-3 font-weight-normal">Connexion</h1>
+        <form method="post">
+            {% if error %}
+                <div class="alert alert-danger">{{ error.messageKey|trans(error.messageData, 'security') }}</div>
+            {% endif %}
+
+            {% if app.user %}
+                <div class="mb-3">
+                    Vous êtes connecté avec {{ app.user.userIdentifier }}, <a href="{{ path('app_logout') }}">Se déconnecter</a>
+                </div>
+            {% endif %}
+
+            <div class="user-box">
+                <label for="inputEmail">Email</label>
+                <input type="email" value="{{ last_username }}" name="email" id="inputEmail" class="form-control" autocomplete="email" required autofocus>
+            </div>
+
+            <div class="user-box">
+                <label for="inputPassword">Mot de passe</label>
+                <input type="password" name="password" id="inputPassword" class="form-control" autocomplete="current-password" required>
+            </div>
+
+            <div class="user-box">
+                <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}">
+                <button class="btn btn-lg btn-primary" type="submit">Se connecter</button>
+                <a href="register">S'inscrire</a>
+                
+            </div>
+        </form>
+    </div>
+{% endblock %}
